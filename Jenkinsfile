@@ -16,9 +16,9 @@ podTemplate(label: 'mypod', containers: [
 
         stage('do some kubectl work') {
             container('kubectl') {
-                    sh "kubectl run --attach jx-dns-control  --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n jx"
+                    sh "kubectl run --attach pipeline-dns-control --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n default"
                     sh "sleep 10"
-                    sh "kubectl delete deployment jx-dns-control -n jx"
+                    sh "kubectl delete deployment pipeline-dns-control -n default"
             }
         }
         stage('do some helm work') {
