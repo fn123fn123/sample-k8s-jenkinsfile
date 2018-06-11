@@ -15,7 +15,7 @@ podTemplate(label: 'mypod', containers: [
 
         stage('dnscontrol-apply') {
           when {
-            branch 'master
+            branch 'master'
           }
             container('kubectl') {
                     sh "kubectl run --attach apply-dns-control --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n default"
