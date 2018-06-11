@@ -16,7 +16,7 @@ podTemplate(label: 'mypod', containers: [
 
         stage('do some kubectl work') {
             container('kubectl') {
-                    sh "kubectl get nodes"
+                    sh "kubectl get pods"
             }
         }
         stage('do some helm work') {
