@@ -8,8 +8,6 @@ podTemplate(label: 'dnscontrolpod', containers: [
     node('dnscontrolpod') {
 
         stage('Preview DNS-Control') {
-           steps {
-              script { 
                   if (env.BRANCH_NAME != 'master') {
                      container('kubectl') {
                           sh "kubectl run --attach pipeline-dns-control --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n default"
@@ -19,8 +17,6 @@ podTemplate(label: 'dnscontrolpod', containers: [
                      echo "Nothing to do"
                      }
                   } 
-              }
-           }
         }
     }
 }
