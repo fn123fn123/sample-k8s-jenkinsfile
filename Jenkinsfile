@@ -6,22 +6,21 @@ podTemplate(label: 'dnscontrolpod', containers: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
   ]) {
     node('dnscontrolpod') {
-      
-     stages {
 
         stage('Preview DNS-Control') {
-           when { 
-                branch 'master' 
-                }
-
-             steps {
-                container('kubectl') {
-                      sh "kubectl run --attach pipeline-dns-control --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n default"
-                      sh "sleep 10"
-                      sh "kubectl delete deployment pipeline-dns-control -n default"
-                } 
-             }
+           steps {
+              script { 
+                  if (env.BRANCH_NAME != 'master') {
+                     container('kubectl') {
+                          sh "kubectl run --attach pipeline-dns-control --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n default"
+                          sh "sleep 10"
+                          sh "kubectl delete deployment pipeline-dns-control -n default"
+                  } else {
+                     echo "Nothing to do"
+                     }
+                  } 
+              }
            }
         }
-     }
+    }
 }
