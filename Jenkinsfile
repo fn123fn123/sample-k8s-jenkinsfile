@@ -10,17 +10,13 @@ podTemplate(label: 'mypod', containers: [
 
         stage('do some Docker work') {
             container('docker') {
-                   {
                     sh "docker search ubuntu "
-                }
             }
         }
 
         stage('do some kubectl work') {
             container('kubectl') {
-                   {
                     sh "kubectl get nodes"
-                }
             }
         }
         stage('do some helm work') {
