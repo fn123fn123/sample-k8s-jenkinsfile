@@ -1,27 +1,18 @@
-podTemplate(label: 'mypod', containers: [
+podTemplate(label: 'dnscontrolpod', containers: [
+    containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.0', command: 'cat', ttyEnabled: true)
+  ],
+  volumes: [
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
   ]) {
-    node('mypod') {
+    node('dnscontrolpod') {
 
-        stage('dnscontrol-preview ') {
-          when {
-            branch 'PR-*'
-          }
+        stage('Preview DNS-Control') {
             container('kubectl') {
-                    sh "kubectl run --attach preview-dns-control --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n default"
-                    sh "kubectl delete deployment preview-dns-control -n default"
+                    sh "kubectl run --attach pipeline-dns-control --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n default"
+                    sh "sleep 10"
+                    sh "kubectl delete deployment pipeline-dns-control -n default"
             }
         }
-
-        stage('dnscontrol-apply') {
-          when {
-            branch 'master'
-          }
-            container('kubectl') {
-                    sh "kubectl run --attach apply-dns-control --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n default"
-                    sh "kubectl delete deployment apply-dns-control -n default"
-            }
-        }
-
     }
 }
