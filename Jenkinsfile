@@ -16,7 +16,7 @@ podTemplate(label: 'mypod', containers: [
 
         stage('do some kubectl work') {
             container('kubectl') {
-                    sh "kubectl run -i --tty --attach dns-control  --image=docker-sbx.artifactory.sbx.infra.aws-us-east-1.mlbinfra.net/dnscontrol:latest -n jx"
+                    sh "kubectl auth can-i get pods -n jx"
             }
         }
         stage('do some helm work') {
