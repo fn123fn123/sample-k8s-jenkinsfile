@@ -1,6 +1,6 @@
 podTemplate(label: 'mypod', containers: [
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
-    containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.9.6', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.0', command: 'cat', ttyEnabled: true),
     containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:latest', command: 'cat', ttyEnabled: true)
   ],
   volumes: [
@@ -10,22 +10,21 @@ podTemplate(label: 'mypod', containers: [
 
         stage('do some Docker work') {
             container('docker') {
-
-                    sh "docker search ubuntu} "
+                   {
+                    sh "docker search ubuntu "
                 }
             }
         }
 
         stage('do some kubectl work') {
             container('kubectl') {
-
+                   {
                     sh "kubectl get nodes"
                 }
             }
         }
         stage('do some helm work') {
             container('helm') {
-
                sh "helm ls"
             }
         }
